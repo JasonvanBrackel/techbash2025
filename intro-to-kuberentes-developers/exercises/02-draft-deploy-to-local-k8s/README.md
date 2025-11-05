@@ -118,7 +118,7 @@ ls -la
 # New files created by Draft:
 # - Dockerfile (instructions for building the container)
 # - .dockerignore (files to exclude from Docker build)
-# - charts/ (Helm chart with Kubernetes manifests)
+# - manifests/ (Kubernetes manifests)
 # - draft.yaml (Draft configuration)
 ```
 
@@ -139,30 +139,42 @@ The Dockerfile typically includes:
 
 ### Review the Kubernetes Manifests
 
-Draft creates a Helm chart with Kubernetes resources:
+Draft creates Kubernetes manifests:
 
 ```bash
-# List the chart contents
-ls -la charts/
-
-# View the values file (configurable parameters)
-cat charts/weather-api/values.yaml
+# List the manifest contents
+ls -la manifests/
 
 # View the deployment manifest
-cat charts/weather-api/templates/deployment.yaml
+cat manifests/deployment.yaml
 
 # View the service manifest
-cat charts/weather-api/templates/service.yaml
+cat manifests/service.yaml
 ```
 
 Key components:
 - **Deployment**: Manages your application pods
 - **Service**: Provides network access to your pods
-- **values.yaml**: Configuration values (replicas, image, ports, etc.)
+
+### Update ImagePullPolicy for Local Development
+
+Since we're using locally built images, we need to configure Kubernetes to never pull from a remote registry:
+
+```bash
+# Edit the deployment manifest to set ImagePullPolicy to Never
+# Open manifests/deployment.yaml and find the containers section
+# Change imagePullPolicy: Always (or if missing, add it) to:
+# imagePullPolicy: Never
+
+# Or use sed to make the change automatically
+sed -i '' 's/imagePullPolicy: Always/imagePullPolicy: Never/' manifests/deployment.yaml
+
+# If imagePullPolicy is not present, you'll need to add it manually under the container spec
+```
 
 ## Part 4: Customize the Configuration (Optional)
 
-You can customize the `draft.yaml` file if needed:
+You can customize a `draft.yaml` file if needed:
 
 ```bash
 cat draft.yaml
@@ -236,20 +248,7 @@ docker rm weather-api-test
 
 Now let's deploy the Weather API to your local Kubernetes cluster:
 
-### Option A: Deploy Using Helm (Recommended)
-
-```bash
-# Install the Helm chart created by Draft
-helm install weather-api ./charts/weather-api
-
-# Check the deployment status
-helm status weather-api
-
-# List all Helm releases
-helm list
-```
-
-### Option B: Deploy Using kubectl
+### Option A: Deploy Using kubectl
 
 ```bash
 # Apply the Kubernetes manifests
@@ -291,6 +290,19 @@ service/weather-api   ClusterIP   10.96.xxx.xxx   <none>        8080/TCP   1m
 
 NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/weather-api   1/1     1            1           1m
+```
+
+### Option A: Deploy Using Helm (Recommended)
+
+```bash
+# Install the Helm chart created by Draft
+helm install weather-api ./charts/weather-api
+
+# Check the deployment status
+helm status weather-api
+
+# List all Helm releases
+helm list
 ```
 
 ## Part 7: Access the Weather API
@@ -363,6 +375,9 @@ k9s
 # 4. Press 'Esc' to go back
 # 5. Press 'd' to describe the pod
 ```
+
+------ Save this for at Home -------
+
 
 ## Part 9: Make Changes and Perform a Rolling Update
 
