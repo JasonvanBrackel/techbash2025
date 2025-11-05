@@ -106,6 +106,18 @@ draft create
 # - Application name: weather-api (or your preferred name)
 # - Port: 8080 (or 5000 depending on your config)
 # - Namespace: default
+
+  ✔ manifests
+  [Draft] version not provided, using default version:  0.0.1
+  Please enter the port exposed in the application (default: 80): 8080
+  Please enter the name of the application (default: src): weather-api
+  Please enter the port the service uses to make the application accessible from outside the cluster (default: 8080): 
+  Please enter  the namespace to place new resources in (default: default): 
+  Please enter the name of the image to use in the deployment (default: weather-api): 
+  [Draft] --> Creating manifests Kubernetes resources...
+
+  [Draft] Draft has successfully created deployment resources for your project 😃
+  [Draft] Use 'draft setup-gh' to set up Github OIDC.
 ```
 
 ### What Draft Creates
@@ -209,7 +221,7 @@ Now let's build the Docker container image for the Weather API:
 
 ```bash
 # Build the image using the generated Dockerfile
-docker build -t weather-api:v1 .
+docker build -t weather-api:v1 -t weather-api:latest .
 
 # This will:
 # 1. Restore NuGet packages
