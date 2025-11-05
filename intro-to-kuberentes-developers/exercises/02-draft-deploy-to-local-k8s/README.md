@@ -253,11 +253,11 @@ helm list
 
 ```bash
 # Apply the Kubernetes manifests
-kubectl apply -f charts/weather-api/templates/deployment.yaml
-kubectl apply -f charts/weather-api/templates/service.yaml
+kubectl apply -f manifests/deployment.yaml
+kubectl apply -f manifests/service.yaml
 
 # Or apply all at once
-kubectl apply -f charts/weather-api/templates/
+kubectl apply -f manifests/
 ```
 
 ### Verify the Deployment
@@ -637,26 +637,6 @@ kubectl top pods
 ## Next Steps
 
 Congratulations! You've successfully containerized and deployed the Weather API to Kubernetes. Here's what you can explore next:
-
-### Continue Learning Kubernetes
-- **Exercise 03** (if available): Advanced Kubernetes concepts
-- Learn about Ingress for HTTP routing
-- Explore Persistent Volumes for stateful applications
-- Study Namespaces for multi-tenant clusters
-- Understand RBAC for security and access control
-
-### Production Considerations
-- Set up CI/CD pipelines with GitHub Actions or Azure DevOps
-- Deploy to cloud Kubernetes services (AKS, EKS, GKE)
-- Implement monitoring with Prometheus and Grafana
-- Add logging with ELK or Loki stack
-- Configure auto-scaling with HPA (Horizontal Pod Autoscaler)
-- Implement network policies for security
-
-### Advanced Draft Usage
-- Customize Draft templates for your organization
-- Create custom Draft packs for different application types
-- Integrate Draft into your CI/CD pipeline
 
 ## Additional Resources
 
